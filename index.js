@@ -17,6 +17,10 @@ app.use(bodyParser.json());
 let userDb = [];
 let itemDb = [];
 
+// conffataa ohjelma herokun varalle!!!
+app.set('port', (process.env.PORT || 80));
+
+
 passport.use(new BasicStrategy(
     (username, password, done) => {
         console.log('Basic strategy params, username ' + username + " , password " + password);
@@ -111,7 +115,11 @@ app.get('/items/:id', (req, res) => {
     }
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+// app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`)
+// })
 
+
+app.listen(app.get('port'), function() {
+  console.log('APP is running on port', app.get('port'));
+});
