@@ -108,22 +108,20 @@ app.delete('/items/:id', passport.authenticate('basic', { session: false}), (req
 
 })
 
-app.put('/items/:id/:title', passport.authenticate('basic', { session: false}), (req, res) => {
-	var index = itemDb.indexOf(req.id);
 
-	if (index === undefined) {
-		res.sendStatus(404);
-	} else {
-		itemDb[index].title = req.title;
-		res.send("JEE POISTETTU!");
-	}
+app.put('/items/', passport.authenticate('basic', { session: false}), (req, res) => {
+    var index = itemDb.findIndex((obj => obj.id == req.body.id));
+
+    if (index === undefined) {
+        res.send("toimint")
+        //res.sendStatus(404);
+    } else {
+        itemDb[index].title = req.body.title;
+
+        res.send(req.body.id + index);
+    }
 
 })
-
-
-
-
-
 
 
 app.get('/items', (req, res) => {
@@ -133,6 +131,33 @@ app.get('/items', (req, res) => {
 
 app.get('/items/:id', (req, res) => {
     const item = itemDb.find(d => d.id === req.params.id);
+    if (item === undefined) {
+        res.sendStatus(404);
+    } else {
+        res.json(item);
+    }
+})
+
+app.get('/items/:category', (req, res) => {
+    const item = itemDb.find(d => d.category === req.params.category);
+    if (item === undefined) {
+        res.sendStatus(404);
+    } else {
+        res.json(item);
+    }
+})
+
+app.get('/items/:location', (req, res) => {
+    const item = itemDb.find(d => d.location === req.params.location);
+    if (item === undefined) {
+        res.sendStatus(404);
+    } else {
+        res.json(item);
+    }
+})
+
+app.get('/items/:Date_of_Posting', (req, res) => {
+    const item = itemDb.find(d => d.Date_of_Posting === req.params.Date_of_Posting);
     if (item === undefined) {
         res.sendStatus(404);
     } else {
