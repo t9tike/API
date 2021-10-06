@@ -108,6 +108,19 @@ app.delete('/items/:id', passport.authenticate('basic', { session: false}), (req
 
 })
 
+app.put('/items/:id/:title', passport.authenticate('basic', { session: false}), (req, res) => {
+	var index = itemDb.indexOf(req.id);
+
+	if (index === undefined) {
+		res.sendStatus(404);
+	} else {
+		itemDb[index].title = req.title;
+		res.send("JEE POISTETTU!");
+	}
+
+})
+
+
 
 
 
