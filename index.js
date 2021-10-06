@@ -148,7 +148,7 @@ app.get('/items/:category', (req, res) => {
 })
 
 app.get('/items/:location', (req, res) => {
-    const item = itemDb.find(d => d.location === req.params.location);
+    const item = itemDb.find(d => d.PostalCode === req.params.location);
     if (item === undefined) {
         res.sendStatus(404);
     } else {
