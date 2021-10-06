@@ -25,8 +25,8 @@ passport.use(new BasicStrategy(
     (username, password, done) => {
         console.log('Basic strategy params, username ' + username + " , password " + password);
 
-        //credintial check
-        //search userDb for matchin user and pasworrd
+        //credential check
+        //search userDb for matching user and pasworrd
 
         const searchResult = userDb.find(user => {
             if(user.username === username){
@@ -47,15 +47,15 @@ passport.use(new BasicStrategy(
 ));
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Tämä on viesti tulevaisuudesta!')
 })
 
 app.get('/protectedResource', passport.authenticate('basic', { session: false}),(req, res) =>{
-    res.send("onnistui jeee")
+    res.send("Tämä ei ole sinun kotisi!")
 
 })
 
-//this route will recive data structure
+//this route will receive data structure
 app.post('/signup', (req, res) => {
 
     const salt = bcrypt.genSaltSync(6)
@@ -82,18 +82,30 @@ app.post('/items', passport.authenticate('basic', { session: false}),(req, res) 
     const newItem = {
         id: uuidv4(),
         title: req.body.title,
-        // Description: req.body.description,
-        // Category: req.body.category,
-        // Address: req.body.Address,
-        // PostalCode: req.body.postalCode,
-        // Asking_Price: req.body.Asking_Price,
+        Description: req.body.description,
+        Category: req.body.category,
+        Address: req.body.Address,
+        PostalCode: req.body.postalCode,
+        Asking_Price: req.body.Asking_Price,
         Date_of_Posting: formatted,
-        // Delivery_Type: req.body.Delivery_Type,
-        // Sellers_Info: req.body.Sellers_Info,
+        Delivery_Type: req.body.Delivery_Type,
+        Sellers_Info: req.body.Sellers_Info,
     }
     itemDb.push(newItem);
     res.sendStatus(201);
     res.send("uusi itemi luotu")
+})
+
+app.delete('/items/:id', passport.authenticate('basic', { session: false}), (req, res) => {
+	var index = itemDb.indexOf(req.id);
+
+	if (index === undefined) {
+		res.sendStatus(404);
+	} else {
+		itemDb.splice(index, 1);
+		res.send("JEE POISTETTU!");
+	}
+
 })
 
 
